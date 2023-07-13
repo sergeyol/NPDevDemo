@@ -1,3 +1,15 @@
-/.alpackages
-/.snapshots
-/SMART business_NPDemo1_1.0.0.0.app
+/**/.alpackages/*
+/**/.vscode/rad.json
+/**/.vscode/.alcache
+/**/.vscode/.altemplates
+
+.DS_Store
+
+.altestrunner
+rad.json
+*.app
+*.g.xlf
+/**/translations/*.g.xlf
+
+!/.previousapps/*.app
+!/.previousappsge/*.app

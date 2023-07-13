@@ -1,8 +1,0 @@
-{
-    "CRS.FileNamePattern": "<ObjectNameShort>.<ObjectTypeShortPascalCase>.al",
-    "CRS.FileNamePatternExtensions": "<BaseNameShort>.<ObjectTypeShortPascalCase>.al",
-    "CRS.ObjectNamePrefix": "OSA ",
-    "CRS.RemovePrefixFromFilename": true,
-    
-    "al.showHomeAtStartup": "Always"
-}
