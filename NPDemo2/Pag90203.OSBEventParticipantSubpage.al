@@ -35,10 +35,21 @@ page 90203 "OSB Event Participant Subpage"
                 field("Registration Confirmed"; Rec."Registration Confirmed")
                 {
                     ToolTip = 'Specifies the value of the Registration Confirmed field.';
+
+                    trigger OnValidate()
+                    begin
+                        CurrPage.SaveRecord();
+                        CalculateTotals();
+                    end;
                 }
                 field("Checked-in"; Rec."Checked-in")
                 {
                     ToolTip = 'Specifies the value of the Checked-in field.';
+
+                    trigger OnValidate()
+                    begin
+                        CurrPage.Update();
+                    end;
                 }
                 field("Line No."; Rec."Line No.")
                 {
@@ -47,11 +58,46 @@ page 90203 "OSB Event Participant Subpage"
                     //Visible = false;
                 }
             }
+            group(Totals)
+            {
+                Caption = 'Totals';
+
+                field("No. of Registrations"; NoOfRegistrations)
+                {
+                    Editable = false;
+                }
+                field("No. of Check-ins"; NoOfCheckins)
+                {
+                    Editable = false;
+                }
+            }
         }
     }
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        CalculateTotals();
+    end;
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
         Rec."Registration Date" := Today();
+    end;
+
+    var
+        NoOfRegistrations: Integer;
+        NoOfCheckins: Integer;
+
+    local procedure CalculateTotals()
+    var
+        EventParticipant: Record "OSB Event Participant";
+    begin
+        EventParticipant.Copy(Rec);
+        EventParticipant.SetRange("Registration Confirmed", true);
+        NoOfRegistrations := EventParticipant.Count();
+
+        EventParticipant.SetRange("Registration Confirmed");
+        EventParticipant.SetRange("Checked-in", true);
+        NoOfCheckins := EventParticipant.Count();
     end;
 }

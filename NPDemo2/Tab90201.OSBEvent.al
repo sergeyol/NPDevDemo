@@ -3,11 +3,18 @@ table 90201 "OSB Event"
     Caption = 'OSB Event';
     DataClassification = CustomerContent;
 
+    InherentPermissions = R;
+
     fields
     {
         field(1; "No."; Code[20])
         {
             Caption = 'No.';
+
+            trigger OnValidate()
+            begin
+                TestNoSeries();
+            end;
         }
         field(2; "Event Date"; Date)
         {
@@ -51,6 +58,12 @@ table 90201 "OSB Event"
             CalcFormula = count("OSB Event Participant" where("Event No." = field("No."), "Checked-in" = const(true)));
             Editable = false;
         }
+        field(10; "No. Series"; Code[20])
+        {
+            Caption = 'No. Series';
+            Editable = false;
+            TableRelation = "No. Series";
+        }
     }
     keys
     {
@@ -61,8 +74,38 @@ table 90201 "OSB Event"
     }
 
     trigger OnInsert()
+    var
+        SalesSetup: Record "Sales & Receivables Setup";
+        NoSeriesMgt: Codeunit NoSeriesManagement;
     begin
         if Rec."Event Date" = 0D then
             Rec."Event Date" := WorkDate();
+
+        if "No." = '' then begin
+            SalesSetup.ReadIsolation := SalesSetup.ReadIsolation::ReadUncommitted;
+            SalesSetup.Get();
+            SalesSetup.TestField("OSB Event Nos.");
+            NoSeriesMgt.InitSeries(SalesSetup."OSB Event Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+        end;
+    end;
+
+    //[InherentPermissions(PermissionObjectType::Table, Database::"Sales & Receivables Setup", 'R')]
+    local procedure TestNoSeries()
+    var
+        SalesSetup: Record "Sales & Receivables Setup";
+        NoSeriesMgt: Codeunit NoSeriesManagement;
+        ErrorInfo: ErrorInfo;
+    begin
+        if (Rec."No." <> '') then begin
+            if Rec."No." <> xRec."No." then begin
+                Error('You are not allowed to enter number %1 manually', Rec.FieldCaption("No."));
+
+                SalesSetup.Get();
+                NoSeriesMgt.TestManual(SalesSetup."OSB Event Nos.");
+                Rec."No. Series" := '';
+            end;
+        end else begin
+            Rec."No. Series" := '';
+        end;
     end;
 }

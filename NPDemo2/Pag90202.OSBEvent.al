@@ -37,18 +37,23 @@ page 90202 "OSB Event"
                 {
                     ToolTip = 'Specifies the value of the Instructor Name field.';
                 }
-                field("No. of Registered Participants"; Rec."No. of Registered Participants")
-                {
-                    ToolTip = 'Specifies the value of the No. of Registered Participants field.';
-                }
-                field("No. of Actual Participants"; Rec."No. of Actual Participants")
-                {
-                    ToolTip = 'Specifies the value of the No. of Actual Participants field.';
-                }
             }
             part(ParticipantsSubpage; "OSB Event Participant Subpage")
             {
                 SubPageLink = "Event No." = field("No.");
+            }
+        }
+    }
+
+    actions
+    {
+        area(Reporting)
+        {
+            action(PrintEvent)
+            {
+                Caption = 'Print Event';
+                RunObject = Report "OSB Event Print";
+                //RunPageLink =  "No." = field("No.");
             }
         }
     }
