@@ -8,9 +8,14 @@ pageextension 90240 "OSB Customer Card" extends "Customer Card"
             {
                 ApplicationArea = All;
 
-                trigger Result(inLongitude: Text; inLatitude: Text)
+                trigger ResultSuccess(inLongitude: Text; inLatitude: Text)
                 begin
                     Message('%1 - %2', inLongitude, inLatitude);
+                end;
+
+                trigger ResultError(inError: Text)
+                begin
+                    Message(inError);
                 end;
             }
         }
