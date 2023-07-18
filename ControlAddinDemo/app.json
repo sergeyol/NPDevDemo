@@ -1,0 +1,27 @@
+{
+  "id": "9a2bd264-4739-45ee-b4c5-d32a42c7b518",
+  "name": "ControlAddIns",
+  "publisher": "SMART academy",
+  "version": "1.0.0.0",
+  "brief": "",
+  "description": "",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [],
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "22.0.0.0",
+  "idRanges": [
+    {
+      "from": 90240,
+      "to": 90249
+    }
+  ],
+  "runtime": "11.0",
+  "features": [
+    "NoImplicitWith"
+  ]
+}
